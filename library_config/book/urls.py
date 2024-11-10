@@ -1,14 +1,13 @@
 from django.urls import path
-
-from .views import BookListAPiViews, BookDetailApiViews, AuthorListApiViews, book_list_views, BookDeleteApiViews, \
-    BookUpdateApiViews, BookCreateApiViews
+from .views import (
+    BookListAPiViews, BookDetailApiViews, BookCreateApiViews, BookUpdateApiViews, BookDeleteApiViews, AuthorListApiViews, book_list_views)
 
 urlpatterns = [
-    path('books', BookListAPiViews.as_view()),
-    path('books/create/', BookCreateApiViews.as_view()),
-    path('<int:pk>/detail', BookDetailApiViews.as_view()),
-    path('<int:pk>/delete', BookDeleteApiViews.as_view()),
-    path('<int:pk>/update', BookUpdateApiViews.as_view()),
-    path('authors', AuthorListApiViews.as_view()),
-    path('f_books', book_list_views)
+    path('books/', BookListAPiViews.as_view(), name='book-list'),
+    path('books/<int:pk>/', BookDetailApiViews.as_view(), name='book-detail'),
+    path('books/create/', BookCreateApiViews.as_view(), name='book-create'),
+    path('books/<int:pk>/update/', BookUpdateApiViews.as_view(), name='book-update'),
+    path('books/<int:pk>/delete/', BookDeleteApiViews.as_view(), name='book-delete'),
+    path('authors/', AuthorListApiViews.as_view(), name='author-list'),
+    path('books/list/', book_list_views, name='book-list-views')
 ]
