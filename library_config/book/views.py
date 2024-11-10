@@ -1,13 +1,15 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .serializers import BookSerializers, AuthorSerializers
 from .models import Book, Author
 
+
 class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializers
+
 
 class BookRetrieveUpdateDestroyAPIView(APIView):
 
@@ -26,8 +28,13 @@ class BookRetrieveUpdateDestroyAPIView(APIView):
 
     def delete(self, request, pk):
         book = get_object_or_404(Book, pk=pk)
+
+        if book.author != request.user:
+            return Response({"detail": "Siz faqat oz kitoblaringizni ochira olasiz."},
+                            status=status.HTTP_403_FORBIDDEN)
+
         book.delete()
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class AuthorRetrieveAPIView(APIView):
@@ -36,4 +43,3 @@ class AuthorRetrieveAPIView(APIView):
         author = get_object_or_404(Author, pk=pk)
         serializer = AuthorSerializers(author)
         return Response(serializer.data)
-
