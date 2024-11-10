@@ -29,7 +29,7 @@ class BookRetrieveUpdateDestroyAPIView(APIView):
         book.delete()
         return Response(status=204)
 
-# Author Views
+
 class AuthorRetrieveAPIView(APIView):
 
     def get(self, request, pk):
