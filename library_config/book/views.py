@@ -11,16 +11,29 @@ from .models import Book, Author
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializers
 
-class BookListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializers
-    lookup_field = 'pk'
+# class BookListAPIView(generics.ListAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializers
+#     lookup_field = 'pk'
 
+class BooksAPIView(APIView):
+    def get(self, request):
+        books = Book.objects.all()
+        serializer = BookSerializers(books, many=True)
+        return Response(serializer.data)
 
-class BookCreateAPIView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializers
-    lookup_field = 'pk'
+    def post(self, request):
+        serializer = BookSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(erializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#
+# class BookCreateAPIView(generics.CreateAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializers
+#     lookup_field = 'pk'
 
 
 class BookRetrieveUpdateDestroyAPIView(APIView):
@@ -41,6 +54,8 @@ class BookRetrieveUpdateDestroyAPIView(APIView):
     def delete(self, request, pk):
         book = get_object_or_404(Book, pk=pk)
 
+
+
         if book.author != request.user:
             return Response({"detail": "Siz faqat oz kitoblaringizni ochira olasiz."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -55,3 +70,13 @@ class AuthorRetrieveAPIView(APIView):
         author = get_object_or_404(Author, pk=pk)
         serializer = AuthorSerializers(author)
         return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
