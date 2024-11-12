@@ -6,9 +6,21 @@ from .serializers import BookSerializers, AuthorSerializers
 from .models import Book, Author
 
 
-class BookListCreateAPIView(generics.ListCreateAPIView):
+
+# class BookListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializers
+
+class BookListAPIView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializers
+    lookup_field = 'pk'
+
+
+class BookCreateAPIView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializers
+    lookup_field = 'pk'
 
 
 class BookRetrieveUpdateDestroyAPIView(APIView):
