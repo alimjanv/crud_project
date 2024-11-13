@@ -26,8 +26,27 @@ class BooksAPIView(APIView):
         serializer = BookSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(erializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        books = Book.objects.all()
+        books.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request):
+        books = Book.objects.all()
+        serializer = BookSerializers(books, data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
 
 #
 # class BookCreateAPIView(generics.CreateAPIView):
@@ -54,8 +73,6 @@ class BookRetrieveUpdateDestroyAPIView(APIView):
     def delete(self, request, pk):
         book = get_object_or_404(Book, pk=pk)
 
-
-
         if book.author != request.user:
             return Response({"detail": "Siz faqat oz kitoblaringizni ochira olasiz."},
                             status=status.HTTP_403_FORBIDDEN)
@@ -70,6 +87,9 @@ class AuthorRetrieveAPIView(APIView):
         author = get_object_or_404(Author, pk=pk)
         serializer = AuthorSerializers(author)
         return Response(serializer.data)
+
+
+
 
 
 
