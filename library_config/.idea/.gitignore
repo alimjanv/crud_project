@@ -1,4 +1,4 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-/tests.py
+library_config/book/tests.py
