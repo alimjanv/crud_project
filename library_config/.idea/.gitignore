@@ -3,3 +3,4 @@
 /workspace.xml
 library_config/book/tests.py
 library_config/book/__init__.py
+library_config/library_config/__init__.py
