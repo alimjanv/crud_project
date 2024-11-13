@@ -2,3 +2,4 @@
 /shelf/
 /workspace.xml
 library_config/book/tests.py
+library_config/book/__init__.py
