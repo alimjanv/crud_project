@@ -1,1 +1,1 @@
-*.tests.py
+*./crud_project/library_config/book/tests.py
